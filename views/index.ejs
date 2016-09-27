@@ -5,29 +5,15 @@
       <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
       <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
       <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
       <script src = "javascripts/contactController.js" ></script>
       <title>Web Application</title>
-      <!-- <style>
-         table, th , td {
-            border: 5px solid grey;
-            border-collapse: collapse;
-            padding: 5px;
-         }
-         
-         table tr:nth-child(odd) {
-            background-color: #f2f2f2;
-         }
-         
-         table tr:nth-child(even) {
-            background-color: #ffffff;
-         }
-      </style> -->
 </head>
-<body ng-app="myContactApp">
-<!-- <table border="5px solid gray" border-style="groove" border-width="50px" border-color="red" > -->
 
-      <!-- Add Contact Module -->
+<body ng-app="myContactApp">
+
+      <!-- *** Add Contact Module Begin *** -->
 
     <div ng-controller="myContactAppControl" class="container">
           <button ng-click="toggleAdd()" class="btn btn-default" >Add Contact</button>
@@ -43,14 +29,15 @@
                 <input type="text" name="lastName" class="form-control" id="lname" ng-model = "data.lastName" 
                     placeholder="Enter Last Name" required/>
               </div>
-              <div class="form-group">
-                <label for="city">City</label>
-                <input type="text" name="city" class="form-control" id="city" ng-model = "data.city" 
-                placeholder="Enter City" required/>
-              </div>
+               <div class="form-group move-down">
+                  <label for="Autocomplete">City</label>
+                  <input type="text" id="Autocomplete" class="form-control" ng-autocomplete="result1" 
+                    details="details1" options="options1"/>
+              </div> 
+                
               <div class="form-group">
                 <label for="mobile">Mobile No.</label>
-                <input type="number" ngMinlength = "10" ngMinlength = "11" name="mobile" class="form-control" id="mobile" ng-model = "data.mobile" 
+                <input type="number" ngMinlength = "10" ngMaxlength = "11" name="mobile" class="form-control" id="mobile" ng-model = "data.mobile" 
                   placeholder="Enter Mobile No." required />
               </div>
               <div class="form-group">
@@ -68,71 +55,62 @@
             </form>
           </modal>
     </div>
+                    <!-- *** Add Contact Module Ends Here *** -->
 
-  <!-- Update Contact Module -->
+
+                     <!-- *****Update Contact Module Begin ***** -->
 
   <div ng-controller="myContactAppControl" class="container"> 
-    <button ng-click="toggleUpdate()" class="btn btn-default" width="20px">Update Contact</button> 
+    <button ng-click="toggleUpdate()" class="btn btn-default">Update Contact</button> 
     <modal title="Update Contact" visible="showUpdate" >
-        <form role="form">
+        <form role="form" >
           <div class="form-group">
             <label for="updateContact"> Select One Of The Options</label><br/>
             <select ng-model="selectedUpdate" id="updateContact" ng-options="update for update in Updates" >
             </select>
-
-              
-          <!-- Update Cotact with selected option Email Module -->
+           
+                     <!-- *****Update Cotact with selected option Email Module***** -->
 
               <div class = "container" ng-switch on="selectedUpdate">
-              <div class="container" ng-switch-when="Email">
-              
-                
-                
-                  <form role="form">
+                <div class="container" ng-switch-when="Email">
+                  <form role="form"  >
                     <div class="form-group">
-                      <!-- <label for="updateSelectedEmail"></label><br/>-->
                       <label for="selectedEmailID">Email ID</label> 
-                      <input type="email" class="form-control" id="selectedEmailID" ng-model = "selectedEmailID" 
-                           placeholder = "Enter Email ID"/>
+                      <input type="email" name = "selectedEmailID" class="form-control" id="selectedEmailID" 
+                        ng-model = "data.selectedEmailID" placeholder = "Enter Email ID" required="true" />
                     </div>
-                    <button type="submit" class="btn btn-default" >Continue</button>
+                    <button type="submit" ng-click = "updateContactEmail()" class="btn btn-default" >Continue</button>
                     <button type="submit" class="btn btn-default" data-dismiss = "modal">Cancel</button>
                   </form>
-                
                 </div>
-                
-              
-      
+             
           <!-- Update Cotact with selected option Mobile Module -->
 
-              <div class = "container" ng-switch-when="Mobile">
-                
+                <div class = "container" ng-switch-when="Mobile">
                   <form role="form">
                     <div class="form-group">
-                      <!-- <label for="updateSelectedMobile">Mobile Selected</label><br/> -->
                       <label for="selectedMobileNo">Mobile No.</label>
-                      <input type="text" class="form-control" id="selectedMobileNo" ng-model = "selectedMobileNo" 
-                         placeholder="Enter Mobile No."/>
+                      <input type="text" name = "selectedMobileNo" class="form-control" id="selectedMobileNo" 
+                        ng-model = "data.selectedMobileNo" placeholder="Enter Mobile No." required="true"/>
                     </div>
-                    <button type="submit" class="btn btn-default" >Continue</button>
+                    <button type="submit" ng-click = "updateContactMobile()" class="btn btn-default" >Continue</button>
                     <button type="submit" class="btn btn-default" data-dismiss = "modal">Cancel</button>
                   </form>
-                
-              </div>
+                </div>
               </div>
         </div>
     </form>
   </modal>
 </div> 
 
-<!-- Delete Contact Module -->
+<!-- *****Delete Contact Module Begin ***** -->
 
 <div ng-controller="myContactAppControl" class="container"> 
-  <button ng-click="toggleDelete()" class="btn btn-default" width="20px">Delete Contact</button> 
+  <button ng-click="toggleDelete()" class="btn btn-default">Delete Contact</button> 
   <modal title="Delete Contact" visible="showDelete">
     <form role="form">
       <div class="form-group">
-        <label for="deleteContact">Select how do you want to Delete your contact</label><br/>
+        <label for="deleteContact">Select One Of The Options</label><br/>
         <select ng-model="selectedDelete" ng-options=" delete for delete in Deletes">
         </select>
           
@@ -143,12 +121,12 @@
           
             <form role="form">
               <div class="form-group">
-                <!-- <label for="Delete Contact With Selected Option Email">Email Selected</label><br/> -->
+                
                 <label for="Selected Email ID">Email ID</label>
-                <input type="email" class="form-control" id="selectedEmailID" ng-model = "selectedEmailID" 
-                  placeholder="Enter Email ID"/>
+                <input type="email" name="selectedEmailID" class="form-control" id="selectedEmailID" 
+                  ng-model = "data.selectedEmailID" placeholder="Enter Email ID" required="true" />
               </div>
-              <button type="submit" class="btn btn-default" >Continue</button>
+              <button type="submit" class="btn btn-default" ng-click = "deleteContactEmail()">Continue</button>
                     <button type="submit" class="btn btn-default" data-dismiss = "modal">Cancel</button>
             </form>
           </div>
@@ -160,12 +138,12 @@
         
           <form role="form">
             <div class="form-group">
-              <!-- <label for="deleteSelectedMobile">Mobile Selected</label><br/> --> 
+               
               <label for="selectedMobileNoDelete">Mobile No.</label>
-              <input type="text" class="form-control" id="selectedMobileNoDelete" ng-model = "selectedMobileNo" 
-                placeholder="Enter Mobile No."/>
+              <input type="text" name ="selectedMobileNo" class="form-control" id="selectedMobileNoDelete" 
+                ng-model = "data.selectedMobileNo" placeholder="Enter Mobile No." required="true"/>
             </div>
-            <button type="submit" class="btn btn-default" >Continue</button>
+            <button type="submit" class="btn btn-default" ng-click = "deleteContactMobile()" >Continue</button>
             <button type="submit" class="btn btn-default" data-dismiss = "modal">Cancel</button>
           </form>
         </div>

@@ -4,6 +4,9 @@ myContactApp.controller('myContactAppControl', function ($scope, $http) {
     $scope.showAdd = false;
     $scope.showUpdate = false;
     $scope.showDelete = false;
+    $scope.result1 = '';
+    $scope.options1 = null;
+    $scope.details1 = '';
     $scope.updateDelete = false;
     $scope.Updates = ["Select One","Email","Mobile"];
     $scope.selectedUpdate = $scope.Updates[0];
@@ -15,17 +18,37 @@ myContactApp.controller('myContactAppControl', function ($scope, $http) {
     {
        
        
-       console.log($scope.data.firstName);
-       console.log($scope.data.lastName);
-       console.log($scope.data.city);
-       console.log($scope.data.mobile);
-       console.log($scope.data.telephone);
-       console.log($scope.data.emailID);
-    //  $http.get("/addContact",{params :  add}).success(function(response){
-      //  console.log(response);
-       //});
-    }
-    //$scope.addContact();
+       var contact = {
+                      "fname" : $scope.data.firstName,
+                      "lname" : $scope.data.lastName,
+                      "city" : $scope.data.city,
+                       "mobile" : $scope.data.mobile,
+                       "telephone" : $scope.data.telephone,
+                       "emailID" : $scope.data.emailID
+                     };
+     $http.get("/addContact",{params :  contact}).success(function(response){
+        console.log(response);
+       });
+       //console.log(contact);
+    };
+    $scope.updateContactEmail = function()
+    {
+      console.log("Contact Updated Successfully Email");
+    };
+    $scope.updateContactMobile = function()
+    {
+      console.log("Contact Updated Successfully Mobile");
+    };
+    $scope.deleteContactEmail = function()
+    {
+      console.log("Contact Deleted Successfully Email");
+      console.log($scope.data.selectedEmailID);
+    };
+    $scope.deleteContactMobile = function()
+    {
+      console.log("Contact Deleted  Successfully Mobile");
+      console.log($scope.data.selectedMobileNo);
+    };
 
 
   $scope.toggleAdd = function()
@@ -59,8 +82,9 @@ myContactApp.directive('modal', function () {
           '</div>' + 
         '</div>',
       restrict: 'E',
-     transclude: true,
+      transclude: true,
       replace:true,
+      keyboard:false,
       //scope:true,
      link: function postLink(scope, element, attrs)
       {
@@ -88,5 +112,70 @@ myContactApp.directive('modal', function () {
           });
         });
       } 
+    };
+  });
+
+
+
+myContactApp.directive('ngAutocomplete', function($parse) {
+    return {
+
+      scope: {
+        details: '=',
+        ngAutocomplete: '=',
+        options: '='
+      },
+
+      link: function(scope, element, attrs, model) {
+
+        //options for autocomplete
+        var opts
+
+        //convert options provided to opts
+        var initOpts = function() {
+          opts = {}
+          if (scope.options) {
+            if (scope.options.types) {
+              opts.types = []
+              opts.types.push(scope.options.types)
+            }
+            if (scope.options.bounds) {
+              opts.bounds = scope.options.bounds
+            }
+            if (scope.options.country) {
+              opts.componentRestrictions = {
+                country: scope.options.country
+              }
+            }
+          }
+        }
+        initOpts()
+
+        //create new autocomplete
+        //reinitializes on every change of the options provided
+        var newAutocomplete = function() {
+          scope.gPlace = new google.maps.places.Autocomplete(element[0], opts);
+          google.maps.event.addListener(scope.gPlace, 'place_changed', function() {
+            scope.$apply(function() {
+//              if (scope.details) {
+                scope.details = scope.gPlace.getPlace();
+//              }
+              scope.ngAutocomplete = element.val();
+            });
+          })
+        }
+        newAutocomplete()
+
+        //watch options provided to directive
+        scope.watchOptions = function () {
+          return scope.options
+        };
+        scope.$watch(scope.watchOptions, function () {
+          initOpts()
+          newAutocomplete()
+          element[0].value = '';
+          scope.ngAutocomplete = element.val();
+        }, true);
+      }
     };
   });
