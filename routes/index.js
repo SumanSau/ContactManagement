@@ -12,32 +12,119 @@ MongoClient.connect(url, function(err, db)
   router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
   });
-  router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Express' });
-  });
+  
 
   router.get('/addContact', function(req, res, next) {
     
     
-       db.collection('contactDetails').insert({
-        "fname" : req.query.fname,
-        "lname" : req.query.lname,
-        "city" : req.query.city,
-        "mobile" : req.query.mobile,
-        "telephone" : req.query.telephone,
-        "emailID" : req.query.emailID
+       db.collection('contactDetails').insert(
+       {
+            "fname" : req.query.fname,
+            "lname" : req.query.lname,
+            "city" : req.query.city,
+            "mobile" : req.query.mobile,
+            "telephone" : req.query.telephone,
+            "emailID" : req.query.emailID
 
        });
-       //console.log(res.json(result));
-    /*db.collection('contactDetails').find().toArray(function(err, result) {
-      if (err) {
-        throw err;
-      }
-      else{
-        res.json(result);        
-      }
-    });*/
+       
   });
+  router.get('/updateContactEmail', function(req, res, next) 
+        {
+            cosole.log(req.query.emailID);
+            console.log("Server Side");
+             db.collection('contactDetails').find({"emailID" : req.query.emailID}).pretty().toArray(function(err, result) 
+             {
+               if (err) 
+                 {
+                   throw err;
+                 }
+               else
+                 {
+                     res.json(result);  
+                     alert("Contact Updated Successfully");
+
+                }
+
+             });
+          });
+  router.get('/updateContactMobile', function(req, res, next) 
+        {
+            cosole.log(req.query.mobile);
+            console.log("Server Side");
+             db.collection('contactDetails').find({"mobile" : req.query.mobile}).pretty().toArray(function(err, result) 
+             {
+               if (err) 
+                 {
+                   throw err;
+                 }
+               else
+                 {
+                     res.json(result); 
+                     alert("Contact Updated Successfully"); 
+                           
+                }
+
+             });
+          });
+  router.get('/deleteContactEmail', function(req, res, next) 
+        {
+            cosole.log(req.query.emailID);
+            console.log("Server Side");
+             db.collection('contactDetails').remove({"emailID" : req.query.emailID}).toArray(function(err, result) 
+             {
+               if (err) 
+                 {
+                   throw err;
+                 }
+               else
+                 {
+                     res.json(result); 
+                     alert("Contact Deleted Successfully"); 
+                           
+                }
+
+             });
+          });
+  router.get('/deleteContactMobile', function(req, res, next) 
+        {
+            cosole.log(req.query.emailID);
+            console.log("Server Side");
+             db.collection('contactDetails').remove({"mobile" : req.query.mobile}).toArray(function(err, result) 
+             {
+               if (err) 
+                 {
+                  alert(" There were some error in deleting contact!!");
+                   throw err;
+
+                 }
+               else
+                 {
+                     res.json(result); 
+                     alert("Contact Deleted Successfully"); 
+                           
+                }
+
+             });
+          });
+  router.get('/getContactDetails', function(req, res, next) 
+        {
+            cosole.log(req.query.emailID);
+            console.log("Server Side");
+             db.collection('contactDetails').find().pretty().toArray(function(err, result) 
+             {
+               if (err) 
+                 {
+                   throw err;
+                 }
+               else
+                 {
+                     res.json(result);  
+                           
+                }
+
+             });
+          });
 
 });
 /* GET home page. */

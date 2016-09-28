@@ -98,6 +98,58 @@
                   </form>
                 </div>
               </div>
+            <div ng-hide ="true" ng-controller = "myContactAppControl" class="container"  >
+                <table  border="1px solid grey" border-collapse="collapse" padding="10px">
+                    <tr>
+                      <th>
+                        First Name
+                      </th>
+                      <th>
+                        Last Name
+                      </th>
+                      <th>
+                        City
+                      </th>
+                      <th>
+                        Mobile
+                      </th>
+                      <th>
+                        Telephone
+                      </th>
+                      <th>
+                        Email ID
+                      </th>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="text" name="fname" class="form-control" id="fname" 
+                        ng-model = "result.fname"  maxlength="60" minlength="1" />
+                      </td>
+                      <td>
+                       <input type="text" name="lname" class="form-control" id="lname" ng-model= "result.lname" 
+                           /> 
+                      </td>
+                      <td>
+                       <input type="text" name= "city" id="city" class="form-control"  
+                          ng-model = "result.city"  /> 
+                      </td>
+                      <td>
+                       <input type="text" name="mobile" class="form-control"  id="mobile" 
+                        ng-model = "result.mobile"  /> 
+                      </td>
+                      <td>
+                       <input type="text" name="telephone" class="form-control" id="telephone" 
+                          ng-model="result.telephone"  /> 
+                      </td>
+                      <td>
+                      <input type="email" name="emailID" class="form-control" id="emailID" 
+                          ng-model="result.emailID" />  
+                      </td>
+
+                    </tr>
+                </table>
+            </div>
+
         </div>
     </form>
   </modal>
@@ -151,12 +203,72 @@
     </div>
     
   </form>
+  </modal>
+</div> 
+
+<div ng-controller="myContactAppControl" class="container">
+          <button ng-click="toggleAll()" class="btn btn-default" >All Contact Details</button>
+          <modal title="All Contact Details" visible="showAll" >
+            <form role="form">
+    
+              <!-- </table> -->
+
+          <div ng-hide ="true"  class="container"  >
+                          <table  border="1px solid grey" border-collapse="collapse" padding="10px">
+                              <tr>
+                                <th>
+                                  First Name
+                                </th>
+                                <th>
+                                  Last Name
+                                </th>
+                                <th>
+                                  City
+                                </th>
+                                <th>
+                                  Mobile
+                                </th>
+                                <th>
+                                  Telephone
+                                </th>
+                                <th>
+                                  Email ID
+                                </th>
+                              </tr>
+                              
+                              <tr ng-repeat="result for result in results">
+                                <td>
+                                   
+                                  {{result.fname}}
+                                </td>
+                                <td>
+                                 {{result.lname}} 
+                                     /> 
+                                </td>
+                                <td>
+                                   
+                                    {{result.city}}
+                                </td>
+                                <td>
+                                  
+                                  {{result.mobile}} 
+                                </td>
+                                <td>
+                                  
+                                    {{result.telephone}}
+                                </td>
+                                <td>
+                                
+                                    {{result.emailID}}
+
+                                </td>
+
+                              </tr>
+                          </table>
+                      </div>
+                  </form>
 
 </modal>
 </div> 
-<div ng-controller="myContactAppControl" class="container"> 
-    <button ng-click="toggleUpdate()" class="btn btn-default" >All Contact Details</button>
-    </div>
-<!-- </table> -->
 </body>
 </html>

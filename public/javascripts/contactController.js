@@ -4,6 +4,7 @@ myContactApp.controller('myContactAppControl', function ($scope, $http) {
     $scope.showAdd = false;
     $scope.showUpdate = false;
     $scope.showDelete = false;
+    $scope.showAll = false;
     $scope.result1 = '';
     $scope.options1 = null;
     $scope.details1 = '';
@@ -31,23 +32,83 @@ myContactApp.controller('myContactAppControl', function ($scope, $http) {
        });
        //console.log(contact);
     };
+
     $scope.updateContactEmail = function()
     {
-      console.log("Contact Updated Successfully Email");
+      var obj = 
+        {
+            "emailID" : $scope.data.selectedEmailID
+        };
+       // console.log("Email is coming");
+       // console.log($scope.data.selectedEmailID);
+      $http.get("/updateContactEmail",{params : obj }).success(function(response)
+        {
+            console.log(response[0]);
+            $scope.result = response[0];
+            console.log($scope.result);
+        });
+      //console.log("Email  Updated Successfully");
     };
+
     $scope.updateContactMobile = function()
     {
-      console.log("Contact Updated Successfully Mobile");
+      var obj = 
+        {
+            "mobile" : $scope.data.selectedMobileNo
+        };
+        console.log("In Mobile");
+        console.log($scope.data.selectedMobileNo);
+      $http.get("/updateContactEmail",{params : obj }).success(function(response)
+        {
+            console.log(response[0]);
+            $scope.result = response[0];
+            console.log($scope.result);
+        });
     };
+
     $scope.deleteContactEmail = function()
     {
-      console.log("Contact Deleted Successfully Email");
-      console.log($scope.data.selectedEmailID);
+      var obj = 
+        {
+            "emailID" : $scope.data.selectedEmailID
+        };
+       // console.log("Email is coming");
+       // console.log($scope.data.selectedEmailID);
+      $http.get("/deleteContactEmail",{params : obj }).success(function(response)
+        {
+            console.log(response[0]);
+            $scope.result = response[0];
+            console.log($scope.result);
+        });
     };
+
     $scope.deleteContactMobile = function()
     {
-      console.log("Contact Deleted  Successfully Mobile");
-      console.log($scope.data.selectedMobileNo);
+      var obj = 
+        {
+            "mobile" : $scope.data.selectedMobileNo
+        };
+        console.log("In Mobile");
+        console.log($scope.data.selectedMobileNo);
+      $http.get("/deleteContactEmail",{params : obj }).success(function(response)
+        {
+            console.log(response[0]);
+            $scope.result = response[0];
+            console.log($scope.result);
+        });
+      
+    };
+    $scope.getContactDetail = function()
+    {
+      
+        
+      $http.get("/getContactDetails").success(function(response)
+        {
+           // console.log(response[0]);
+            $scope.result = response;
+           // console.log($scope.result);
+        });
+      
     };
 
 
@@ -63,6 +124,10 @@ myContactApp.controller('myContactAppControl', function ($scope, $http) {
     $scope.toggleDelete = function()
     {
         $scope.showDelete = !$scope.showDelete;
+    };
+    $scope.toggleAll = function()
+    {
+        $scope.showAll = !$scope.showAll;
     };
     
   });
@@ -117,7 +182,7 @@ myContactApp.directive('modal', function () {
 
 
 
-myContactApp.directive('ngAutocomplete', function($parse) {
+/*myContactApp.directive('ngAutocomplete', function($parse) {
     return {
 
       scope: {
@@ -178,4 +243,4 @@ myContactApp.directive('ngAutocomplete', function($parse) {
         }, true);
       }
     };
-  });
+  });*/
